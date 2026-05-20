@@ -149,6 +149,8 @@ void tampilkanDaftarProvinsi(); // HILL
 int pilihProvinsi(); // HILL
 void hitungKelayakan(Karyawan *kar); // HILL
 void tampilkanAnalisisKelayakan(Karyawan *kar); // HILL
+void tambahKaryawan(Karyawan *kar, int *jumlah); // ZIRA
+float getPTKP(StatusPerkawinan perkawinan, int tanggungan); //ZIRA
 
 
 // HILL
@@ -378,4 +380,12 @@ void tambahKaryawan(Karyawan *kar, int *jumlah)
 
     // Langsung tampilkan analisis kelayakan setelah input
     tampilkanAnalisisKelayakan(&kar[*jumlah - 1]);
+}
+
+// ZIRA
+// GET PTKP 
+float getPTKP(StatusPerkawinan perkawinan, int tanggungan)
+{
+    float ptkpDasar = (perkawinan == TK) ? 54000000.0f : 58500000.0f;
+    return ptkpDasar + (tanggungan * 4500000.0f);
 }
