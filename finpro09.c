@@ -157,6 +157,61 @@ void tampilkanKaryawan(Karyawan *kar, int jumlah); // LEA
 void cariKaryawan(Karyawan *kar, int jumlah); // LEA
 void statistik(Karyawan *kar, int jumlah); // LEA
 
+// LEA
+// MAIN PROGRAM
+int main()
+{
+    Karyawan *karyawan = (Karyawan *)malloc(MAKS * sizeof(Karyawan));
+    int jumlah = 0;
+    int pilihan;
+
+    do
+    {   printf("\n============================================\n");
+        printf("    SISTEM MANAJEMEN GAJI LAYAK (SDG 8)    \n");
+        printf("     Decent Work & Economic Growth        \n");
+        printf("   Data: UMP 2026 + BPS Susenas Sep 2024  \n");
+        printf("============================================\n");
+        printf("1. Tambah Karyawan\n");
+        printf("2. Tampilkan Semua Karyawan\n");
+        printf("3. Cari Karyawan\n");
+        printf("4. Statistik Gaji & Kelayakan\n");
+        printf("5. Keluar\n");
+        printf("Pilih Menu: ");
+
+        if (scanf("%d", &pilihan) != 1)
+        {
+            printf("\nInput Tidak Valid\n");
+            return 0;
+        }
+
+        switch (pilihan)
+        {
+        case 1:
+            tambahKaryawan(karyawan, &jumlah);
+            break;
+        case 2:
+            tampilkanKaryawan(karyawan, jumlah);
+            break;
+        case 3:
+            cariKaryawan(karyawan, jumlah);
+            break;
+        case 4:
+            statistik(karyawan, jumlah);
+            break;
+        case 5:
+            printf("\nProgram Selesai\n");
+            break;
+        default:
+            printf("\nMenu Tidak Valid\n");
+        }
+
+    } while (pilihan != 5);
+
+    free(karyawan);
+    return 0;
+}
+
+
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
 void tampilkanDaftarProvinsi()
