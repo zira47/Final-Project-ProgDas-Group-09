@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAKS 100
 #define JUMLAH_PROVINSI 38
