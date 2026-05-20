@@ -151,7 +151,7 @@ void hitungKelayakan(Karyawan *kar); // HILL
 void tampilkanAnalisisKelayakan(Karyawan *kar); // HILL
 void tambahKaryawan(Karyawan *kar, int *jumlah); // ZIRA
 float getPTKP(StatusPerkawinan perkawinan, int tanggungan); //ZIRA
-
+float hitungPPh21(float pkp); // ZIRA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
@@ -388,4 +388,42 @@ float getPTKP(StatusPerkawinan perkawinan, int tanggungan)
 {
     float ptkpDasar = (perkawinan == TK) ? 54000000.0f : 58500000.0f;
     return ptkpDasar + (tanggungan * 4500000.0f);
+}
+
+// ZIRA
+// HITUNG PPh 21 PROGRESIF 
+float hitungPPh21(float pkp)
+{
+    if (pkp <= 0)
+        return 0;
+    float pajak = 0;
+    if (pkp <= 60000000)
+        pajak = pkp * 0.05f;
+    else if (pkp <= 250000000)
+    {
+        pajak = 60000000 * 0.05f;
+        pajak += (pkp - 60000000) * 0.15f;
+    }
+    else if (pkp <= 500000000)
+    {
+        pajak = 60000000 * 0.05f;
+        pajak += (250000000 - 60000000) * 0.15f;
+        pajak += (pkp - 250000000) * 0.25f;
+    }
+    else if (pkp <= 5000000000.0f)
+    {
+        pajak = 60000000 * 0.05f;
+        pajak += (250000000 - 60000000) * 0.15f;
+        pajak += (500000000 - 250000000) * 0.25f;
+        pajak += (pkp - 500000000) * 0.30f;
+    }
+    else
+    {
+        pajak = 60000000 * 0.05f;
+        pajak += (250000000 - 60000000) * 0.15f;
+        pajak += (500000000 - 250000000) * 0.25f;
+        pajak += (5000000000.0f - 500000000) * 0.30f;
+        pajak += (pkp - 5000000000.0f) * 0.35f;
+    }
+    return pajak;
 }
