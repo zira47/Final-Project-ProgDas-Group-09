@@ -152,6 +152,7 @@ void tampilkanAnalisisKelayakan(Karyawan *kar); // HILL
 void tambahKaryawan(Karyawan *kar, int *jumlah); // ZIRA
 float getPTKP(StatusPerkawinan perkawinan, int tanggungan); //ZIRA
 float hitungPPh21(float pkp); // ZIRA
+void hitungGaji(Karyawan *kar); // ZIRA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
@@ -426,4 +427,25 @@ float hitungPPh21(float pkp)
         pajak += (pkp - 5000000000.0f) * 0.35f;
     }
     return pajak;
+}
+
+// ZIRA
+// HITUNG GAJI 
+void hitungGaji(Karyawan *kar)
+{
+    float lembur = 0;
+    if (kar->jam > 40)
+        lembur = (kar->jam - 40) * (kar->tarif * 1.5f);
+    kar->gajiKotorPerBulan = (kar->jam * kar->tarif) + lembur;
+
+    float gajiSetahun = kar->gajiKotorPerBulan * 12;
+    kar->ptkp = getPTKP(kar->perkawinan, kar->tanggungan);
+    kar->pkp = gajiSetahun - kar->ptkp;
+    if (kar->pkp < 0)
+        kar->pkp = 0;
+
+    float pajakSetahun = hitungPPh21(kar->pkp);
+    kar->pajakPerBulan = pajakSetahun / 12;
+    kar->gajiBersihPerBulan = kar->gajiKotorPerBulan - kar->pajakPerBulan;
+    kar->info.gajiPerBulan = kar->gajiBersihPerBulan;
 }
