@@ -154,6 +154,7 @@ float getPTKP(StatusPerkawinan perkawinan, int tanggungan); //ZIRA
 float hitungPPh21(float pkp); // ZIRA
 void hitungGaji(Karyawan *kar); // ZIRA
 void tampilkanKaryawan(Karyawan *kar, int jumlah); // LEA
+void cariKaryawan(Karyawan *kar, int jumlah); // LEA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
@@ -501,4 +502,28 @@ void tampilkanKaryawan(Karyawan *kar, int jumlah)
 
         tampilkanAnalisisKelayakan(&kar[i]);
     }
+}
+
+// LEA  
+// CARI KARYAWAN
+void cariKaryawan(Karyawan *kar, int jumlah)
+{
+    int id, ditemukan = 0;
+    printf("\nMasukkan ID Karyawan: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < jumlah; i++)
+    {
+        if (kar[i].id == id)
+        {
+            printf("\nKaryawan Ditemukan\n");
+            printf("Nama              : %s\n", kar[i].nama);
+            printf("Provinsi          : %s\n", dataProvinsi[kar[i].indeksProvinsi].nama);
+            printf("Gaji Bersih/bln   : Rp%.2f\n", kar[i].gajiBersihPerBulan);
+            tampilkanAnalisisKelayakan(&kar[i]);
+            ditemukan = 1;
+        }
+    }
+    if (!ditemukan)
+        printf("Karyawan Tidak Ditemukan\n");
 }
