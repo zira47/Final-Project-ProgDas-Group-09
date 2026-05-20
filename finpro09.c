@@ -174,3 +174,22 @@ void tampilkanDaftarProvinsi()
             khl, lw);
     }
 }
+
+// HILL
+// PILIH PROVINSI
+int pilihProvinsi()
+{
+    tampilkanDaftarProvinsi();
+
+    int pilihan;
+    printf("\nPilih nomor provinsi (1-%d): ", JUMLAH_PROVINSI);
+    scanf("%d", &pilihan);
+
+    if (pilihan < 1 || pilihan > JUMLAH_PROVINSI)
+    {
+        printf("Pilihan tidak valid, menggunakan DKI Jakarta sebagai default.\n");
+        return 0; // Default index 0 = DKI Jakarta
+    }
+
+    return pilihan - 1; // Konversi ke index 0-based
+}
