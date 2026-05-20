@@ -155,6 +155,7 @@ float hitungPPh21(float pkp); // ZIRA
 void hitungGaji(Karyawan *kar); // ZIRA
 void tampilkanKaryawan(Karyawan *kar, int jumlah); // LEA
 void cariKaryawan(Karyawan *kar, int jumlah); // LEA
+void statistik(Karyawan *kar, int jumlah); // LEA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
@@ -526,4 +527,100 @@ void cariKaryawan(Karyawan *kar, int jumlah)
     }
     if (!ditemukan)
         printf("Karyawan Tidak Ditemukan\n");
+}
+
+// LEA
+// STATISTIK + REKAPITULASI SDG 8
+void statistik(Karyawan *kar, int jumlah)
+{
+    if (jumlah == 0)
+    {
+        printf("Tidak Ada Data Tersedia\n");
+        return;
+    }
+
+    float tertinggi = kar[0].gajiBersihPerBulan;
+    float terendah = kar[0].gajiBersihPerBulan;
+    float totalBersih = 0, totalPajak = 0;
+
+    int jmlTidakLayak = 0, jmlLayakMin = 0, jmlLayakBermartabat = 0;
+    int jmlDiBawahUMP = 0;
+    float totalDefisitKHL = 0, totalDefisitLW = 0;
+
+    for (int i = 0; i < jumlah; i++)
+    {
+        if (kar[i].gajiBersihPerBulan > tertinggi)
+            tertinggi = kar[i].gajiBersihPerBulan;
+        if (kar[i].gajiBersihPerBulan < terendah)
+            terendah = kar[i].gajiBersihPerBulan;
+        totalBersih += kar[i].gajiBersihPerBulan;
+        totalPajak += kar[i].pajakPerBulan;
+
+        if (kar[i].selisihUMP < 0)
+            jmlDiBawahUMP++;
+
+        switch (kar[i].kelayakan)
+        {
+        case TIDAK_LAYAK:
+            jmlTidakLayak++;
+            totalDefisitKHL += -kar[i].selisihKHL;
+            totalDefisitLW += -kar[i].selisihLW;
+            break;
+        case LAYAK_MINIMUM:
+            jmlLayakMin++;
+            totalDefisitLW += -kar[i].selisihLW;
+            break;
+        case LAYAK_BERMARTABAT:
+            jmlLayakBermartabat++;
+            break;
+        }
+    }
+
+    printf("\n   STATISTIK GAJI & KELAYAKAN HIDUP (SDG 8)  \n");
+
+    printf("\n[1] STATISTIK GAJI\n");
+    printf("    Gaji Bersih Tertinggi : Rp%.2f\n", tertinggi);
+    printf("    Gaji Bersih Terendah  : Rp%.2f\n", terendah);
+    printf("    Rata-rata Gaji Bersih : Rp%.2f\n", totalBersih / jumlah);
+    printf("    Total PPh 21/bulan    : Rp%.2f\n", totalPajak);
+
+    printf("\n[2] KEPATUHAN HUKUM — UMP 2026\n");
+    printf("    Di bawah UMP (ilegal) : %d orang (%.1f%%)\n",
+           jmlDiBawahUMP, (float)jmlDiBawahUMP / jumlah * 100);
+    printf("    Di atas / sesuai UMP  : %d orang (%.1f%%)\n",
+        jumlah - jmlDiBawahUMP,
+           (float)(jumlah - jmlDiBawahUMP) / jumlah * 100);
+
+    printf("\n[3] REKAPITULASI KELAYAKAN HIDUP\n");
+    printf("    Total Karyawan        : %d orang\n", jumlah);
+    printf("    ---------------------------------─────\n");
+    printf("    Tidak Layak (< KHL): %d orang (%.1f%%)\n",
+           jmlTidakLayak, (float)jmlTidakLayak / jumlah * 100);
+    printf("    Layak Minimum      : %d orang (%.1f%%)\n",
+           jmlLayakMin, (float)jmlLayakMin / jumlah * 100);
+    printf("    Layak Bermartabat  : %d orang (%.1f%%)\n",
+           jmlLayakBermartabat, (float)jmlLayakBermartabat / jumlah * 100);
+
+    printf("\n[4] ANALISIS DEFISIT UPAH\n");
+    if (totalDefisitKHL > 0)
+        printf("    Total defisit vs KHL  : Rp%.0f/bulan\n", totalDefisitKHL);
+    else
+        printf("    Semua karyawan memenuhi standar KHL.\n");
+    if (totalDefisitLW > 0)
+        printf("    Total defisit vs LW   : Rp%.0f/bulan\n", totalDefisitLW);
+    else
+        printf("    Semua karyawan memenuhi standar Living Wage.\n");
+
+    // Skor SDG 8:
+    float skorSDG8 = (float)jmlLayakBermartabat / jumlah * 100;
+    printf("\n[5] SKOR SDG 8 PERUSAHAAN\n");
+    printf("    %.1f%% karyawan hidup layak bermartabat\n", skorSDG8);
+    if (skorSDG8 >= 80)
+        printf("    BAIK - Perusahaan mendukung Decent Work dengan baik.\n");
+    else if (skorSDG8 >= 50)
+        printf("    CUKUP - Masih perlu peningkatan kesejahteraan karyawan.\n");
+    else
+        printf("    KRITIS - Perlu perhatian serius terhadap kelayakan upah.\n");
+
+    printf("\n    Sumber data: UMP 2026 (PP No.49 Th.2025) BPS Susenas September 2024\n");
 }
