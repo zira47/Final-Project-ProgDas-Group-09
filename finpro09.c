@@ -156,7 +156,6 @@ void hitungGaji(Karyawan *kar); // ZIRA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
-// Menampilkan semua provinsi beserta UMP 2026, total KHL, dan total Living Wage
 void tampilkanDaftarProvinsi()
 {
     printf("\n--- DAFTAR 38 PROVINSI INDONESIA ---\n");
@@ -210,9 +209,7 @@ void hitungKelayakan(Karyawan *kar)
     // Hitung Total Living Wage (KHL + 3 komponen martabat) 
     kar->totalLivingWage = kar->totalKHL + dataProvinsi[p].biayaPendidikan + dataProvinsi[p].biayaRekreasi + dataProvinsi[p].biayaTabungan;
 
-    // Sesuaikan dengan Tanggungan
     // Setiap tanggungan menambah 40% dari biaya pangan + kesehatan
-    // (karena papan & transport relatif tidak berubah signifikan)
     if (kar->tanggungan > 0)
     {
         float tambahanPerOrang =
