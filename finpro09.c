@@ -333,3 +333,49 @@ void tampilkanAnalisisKelayakan(Karyawan *kar)
         break;
     }
 }
+
+// ZIRA
+// TAMBAH KARYAWAN
+void tambahKaryawan(Karyawan *kar, int *jumlah)
+{
+    printf("\nID Karyawan: ");
+    scanf("%d", &kar[*jumlah].id);
+
+    printf("Nama Karyawan: ");
+    scanf("%s", kar[*jumlah].nama);
+
+    printf("Jam Kerja (per bulan): ");
+    scanf("%d", &kar[*jumlah].jam);
+
+    printf("Tarif Per Jam (Rp): ");
+    scanf("%f", &kar[*jumlah].tarif);
+
+    int pilihanJabatan;
+    printf("\nJabatan\n0. Staf\n1. Manajer\n2. Magang\nPilih: ");
+    scanf("%d", &pilihanJabatan);
+    kar[*jumlah].jabatan = (Jabatan)pilihanJabatan;
+
+    int pilihanPerkawinan;
+    printf("\nStatus Perkawinan\n0. Tidak Kawin (TK)\n1. Kawin (K)\nPilih: ");
+    scanf("%d", &pilihanPerkawinan);
+    kar[*jumlah].perkawinan = (StatusPerkawinan)pilihanPerkawinan;
+
+    printf("Jumlah Tanggungan (0-3): ");
+    scanf("%d", &kar[*jumlah].tanggungan);
+    if (kar[*jumlah].tanggungan < 0)
+        kar[*jumlah].tanggungan = 0;
+    if (kar[*jumlah].tanggungan > 3)
+        kar[*jumlah].tanggungan = 3;
+
+    printf("\nProvinsi Tempat Tinggal Karyawan:\n");
+    kar[*jumlah].indeksProvinsi = pilihProvinsi();
+
+    hitungGaji(&kar[*jumlah]);
+    hitungKelayakan(&kar[*jumlah]);
+
+    (*jumlah)++;
+    printf("\nKaryawan Berhasil Ditambahkan!\n");
+
+    // Langsung tampilkan analisis kelayakan setelah input
+    tampilkanAnalisisKelayakan(&kar[*jumlah - 1]);
+}
