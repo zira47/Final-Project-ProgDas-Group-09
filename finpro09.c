@@ -149,3 +149,28 @@ void tampilkanDaftarProvinsi(); // HILL
 int pilihProvinsi(); // HILL
 void hitungKelayakan(Karyawan *kar); // HILL
 void tampilkanAnalisisKelayakan(Karyawan *kar); // HILL
+
+
+// HILL
+// TAMPILKAN DAFTAR PROVINSI
+// Menampilkan semua provinsi beserta UMP 2026, total KHL, dan total Living Wage
+void tampilkanDaftarProvinsi()
+{
+    printf("\n--- DAFTAR 38 PROVINSI INDONESIA ---\n");
+    printf("%-3s %-25s %12s %12s %12s\n\n", "No", "Provinsi", "UMP 2026", "KHL/bln", "Living Wage/bln");
+
+    for (int i = 0; i < JUMLAH_PROVINSI; i++)
+    {
+        // Hitung KHL = jumlah 5 komponen dasar
+        float khl = dataProvinsi[i].biayaPangan + dataProvinsi[i].biayaSandang + dataProvinsi[i].biayaPapan + dataProvinsi[i].biayaKesehatan + dataProvinsi[i].biayaTransport;
+
+        // Hitung Living Wage = KHL + 3 komponen tambahan
+        float lw = khl + dataProvinsi[i].biayaPendidikan + dataProvinsi[i].biayaRekreasi + dataProvinsi[i].biayaTabungan;
+
+        printf("%-3d %-25s %12.0f %12.0f %14.0f\n",
+            i + 1,
+            dataProvinsi[i].nama,
+            dataProvinsi[i].ump,
+            khl, lw);
+    }
+}
