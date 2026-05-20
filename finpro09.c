@@ -40,6 +40,7 @@ typedef union
 - Komponen KHL : Estimasi pengeluaran berdasarkan BPS (pangan 50%, papan 25%, sandang 5%, kesehatan 8%, transport 12%)
 - Living Wage  : KHL + pendidikan + rekreasi + tabungan darurat (estimasi 20-25% di atas KHL, mengacu metodologi Global Living Wage Coalition)
 */
+
 typedef struct
 {
     char nama[40];        // Nama provinsi
@@ -54,3 +55,31 @@ typedef struct
     float biayaRekreasi;   // Sosial & hiburan
     float biayaTabungan;   // Tabungan darurat minimum
 } DataProvinsi;
+
+// STRUCT KARYAWAN
+typedef struct
+{
+    int id;
+    char nama[50];
+    int jam;
+    float tarif;
+    float gajiKotorPerBulan;
+    float pajakPerBulan;
+    float gajiBersihPerBulan;
+    float ptkp;
+    float pkp;
+    Jabatan jabatan;
+    StatusPerkawinan perkawinan;
+    int tanggungan;
+    InfoGaji info;
+
+    // Data wilayah & kelayakan
+    int indeksProvinsi;    // Index ke array dataProvinsi
+    float totalKHL;        // Total KHL/bulan (disesuaikan tanggungan)
+    float totalLivingWage; // Total Living Wage/bulan
+    float selisihKHL;      // Gaji bersih - KHL
+    float selisihLW;       // Gaji bersih - Living Wage
+    float selisihUMP;      // Gaji bersih - UMP 2026
+    StatusKelayakan kelayakan;
+} Karyawan;
+
