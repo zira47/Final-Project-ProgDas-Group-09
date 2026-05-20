@@ -193,3 +193,42 @@ int pilihProvinsi()
 
     return pilihan - 1; // Konversi ke index 0-based
 }
+
+// HILL
+// HITUNG KELAYAKAN
+// Membandingkan gaji bersih vs KHL, Living Wage, dan UMP 2026 provinsi karyawan
+void hitungKelayakan(Karyawan *kar)
+{
+    int p = kar->indeksProvinsi;
+
+    // Hitung Total KHL (5 komponen dasar) 
+    kar->totalKHL = dataProvinsi[p].biayaPangan + dataProvinsi[p].biayaSandang + dataProvinsi[p].biayaPapan + dataProvinsi[p].biayaKesehatan + dataProvinsi[p].biayaTransport;
+
+    // Hitung Total Living Wage (KHL + 3 komponen martabat) 
+    kar->totalLivingWage = kar->totalKHL + dataProvinsi[p].biayaPendidikan + dataProvinsi[p].biayaRekreasi + dataProvinsi[p].biayaTabungan;
+
+    // Sesuaikan dengan Tanggungan
+    // Setiap tanggungan menambah 40% dari biaya pangan + kesehatan
+    // (karena papan & transport relatif tidak berubah signifikan)
+    if (kar->tanggungan > 0)
+    {
+        float tambahanPerOrang =
+            (dataProvinsi[p].biayaPangan + dataProvinsi[p].biayaKesehatan) * 0.40f;
+        float totalTambahan = tambahanPerOrang * kar->tanggungan;
+        kar->totalKHL += totalTambahan;
+        kar->totalLivingWage += totalTambahan;
+    }
+
+    // Hitung Selisih
+    kar->selisihKHL = kar->gajiBersihPerBulan - kar->totalKHL;
+    kar->selisihLW = kar->gajiBersihPerBulan - kar->totalLivingWage;
+    kar->selisihUMP = kar->gajiBersihPerBulan - dataProvinsi[p].ump;
+
+    // Tentukan Status Kelayakan
+    if (kar->selisihKHL < 0)
+        kar->kelayakan = TIDAK_LAYAK;
+    else if (kar->selisihLW < 0)
+        kar->kelayakan = LAYAK_MINIMUM;
+    else
+        kar->kelayakan = LAYAK_BERMARTABAT;
+}
