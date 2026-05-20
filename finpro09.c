@@ -489,8 +489,8 @@ float hitungPPh21(float pkp)
 void hitungGaji(Karyawan *kar)
 {
     float lembur = 0;
-    if (kar->jam > 40)
-        lembur = (kar->jam - 40) * (kar->tarif * 1.5f);
+    if (kar->jam > 160)
+        lembur = (kar->jam - 160) * (kar->tarif * 1.5f);
     kar->gajiKotorPerBulan = (kar->jam * kar->tarif) + lembur;
 
     float gajiSetahun = kar->gajiKotorPerBulan * 12;
