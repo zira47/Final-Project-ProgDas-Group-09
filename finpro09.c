@@ -402,7 +402,8 @@ void tambahKaryawan(Karyawan *kar, int *jumlah)
     scanf("%d", &kar[*jumlah].id);
 
     printf("Nama Karyawan: ");
-    scanf("%s", kar[*jumlah].nama);
+    getchar();
+    scanf("%[^\n]", kar[*jumlah].nama);
 
     printf("Jam Kerja (per bulan): ");
     scanf("%d", &kar[*jumlah].jam);
