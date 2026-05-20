@@ -232,3 +232,104 @@ void hitungKelayakan(Karyawan *kar)
     else
         kar->kelayakan = LAYAK_BERMARTABAT;
 }
+
+// HILL
+// TAMPILKAN ANALISIS KELAYAKAN
+void tampilkanAnalisisKelayakan(Karyawan *kar)
+{
+    int p = kar->indeksProvinsi;
+    printf("\n==============================================\n");
+    printf("      ANALISIS KELAYAKAN HIDUP (SDG 8)        \n");
+    printf("  Decent Work & Economic Growth - Goal 8     \n");
+    printf("==============================================\n");
+    printf("Karyawan   : %s\n", kar->nama);
+    printf("Provinsi   : %s\n", dataProvinsi[p].nama);
+    printf("Tanggungan : %d orang\n", kar->tanggungan);
+    printf("UMP 2026   : Rp%.0f\n", dataProvinsi[p].ump);
+
+    // Blok A: Rincian KHL 
+    printf("\n[A] KEBUTUHAN HIDUP LAYAK / KHL\n");
+    printf("    (Sumber: BPS Susenas Sep 2024 - proporsi pengeluaran per kapita)\n");
+    printf("    Pangan       : Rp %10.0f\n", dataProvinsi[p].biayaPangan);
+    printf("    Sandang      : Rp %10.0f\n", dataProvinsi[p].biayaSandang);
+    printf("    Papan (sewa) : Rp %10.0f\n", dataProvinsi[p].biayaPapan);
+    printf("    Kesehatan    : Rp %10.0f\n", dataProvinsi[p].biayaKesehatan);
+    printf("    Transport    : Rp %10.0f\n", dataProvinsi[p].biayaTransport);
+
+    if (kar->tanggungan > 0)
+    {
+        float tambahanPerOrang =
+            (dataProvinsi[p].biayaPangan + dataProvinsi[p].biayaKesehatan) * 0.40f;
+        printf("    Tanggungan(%dx): Rp %7.0f\n",
+            kar->tanggungan,
+               tambahanPerOrang * kar->tanggungan);
+    }
+    printf("    ---------------------------------\n");
+    printf("    TOTAL KHL    : Rp %10.0f\n", kar->totalKHL);
+
+    // Blok B: Rincian Living Wage
+    printf("\n[B] LIVING WAGE - Upah Hidup Bermartabat\n");
+    printf("    (Metodologi: Global Living Wage Coalition + BPS 2024)\n");
+    printf("    KHL (di atas): Rp %10.0f\n", kar->totalKHL);
+    printf("    Pendidikan   : Rp %10.0f\n", dataProvinsi[p].biayaPendidikan);
+    printf("    Rekreasi     : Rp %10.0f\n", dataProvinsi[p].biayaRekreasi);
+    printf("    Tabungan     : Rp %10.0f\n", dataProvinsi[p].biayaTabungan);
+    printf("    ---------------------------------\n");
+    printf("    TOTAL LW     : Rp %10.0f\n", kar->totalLivingWage);
+
+    // Blok C: Perbandingan
+    printf("\n[C] PERBANDINGAN DENGAN GAJI BERSIH\n");
+    printf("    Gaji Bersih/bln  : Rp %10.0f\n", kar->gajiBersihPerBulan);
+    printf("    ---------------------------------\n");
+
+    // Perbandingan vs UMP
+    if (kar->selisihUMP >= 0)
+        printf("    vs UMP 2026      : Rp %10.0f   DI ATAS UMP\n", kar->selisihUMP);
+    else
+        printf("    vs UMP 2026      : Rp %10.0f   DI BAWAH UMP (melanggar hukum!)\n",
+            kar->selisihUMP);
+
+    // Perbandingan vs KHL
+    if (kar->selisihKHL >= 0)
+        printf("    vs KHL           : Rp %10.0f   SURPLUS\n", kar->selisihKHL);
+    else
+        printf("    vs KHL           : Rp %10.0f   DEFISIT\n", kar->selisihKHL);
+
+    // Perbandingan vs Living Wage
+    if (kar->selisihLW >= 0)
+        printf("    vs Living Wage   : Rp %10.0f   SURPLUS\n", kar->selisihLW);
+    else
+        printf("    vs Living Wage   : Rp %10.0f   DEFISIT\n", kar->selisihLW);
+
+    // Blok D: Vonis Status
+    printf("\n[D] STATUS KELAYAKAN HIDUP\n");
+    switch (kar->kelayakan)
+    {
+    case TIDAK_LAYAK:
+        printf("    TIDAK LAYAK \n");
+        printf("    Gaji belum mencukupi kebutuhan hidup dasar (KHL).\n");
+        printf("    Karyawan ini berisiko mengalami kemiskinan dan\n");
+        printf("    tidak dapat memenuhi kebutuhan dasar keluarganya.\n");
+        printf("    Butuh kenaikan gaji minimal: Rp %.0f/bulan\n",
+            -kar->selisihKHL);
+        printf("    Untuk mencapai Living Wage butuh: Rp %.0f/bulan\n",
+            -kar->selisihLW);
+        break;
+    case LAYAK_MINIMUM:
+        printf("    LAYAK MINIMUM \n");
+        printf("    Gaji cukup untuk kebutuhan dasar (KHL),\n");
+        printf("    namun belum memenuhi standar hidup bermartabat.\n");
+        printf("    Karyawan tidak punya ruang untuk menabung atau\n");
+        printf("    mengembangkan diri secara optimal.\n");
+        printf("    Butuh tambahan Rp %.0f/bulan untuk Living Wage.\n",
+            -kar->selisihLW);
+        break;
+    case LAYAK_BERMARTABAT:
+        printf("    LAYAK BERMARTABAT \n");
+        printf("    Gaji mencukupi untuk hidup layak dan bermartabat.\n");
+        printf("    Karyawan dapat memenuhi KHL, menabung, berekreasi, dan terus mengembangkan diri.\n");
+        printf("    Surplus di atas Living Wage: Rp %.0f/bulan\n",
+            kar->selisihLW);
+        break;
+    }
+}
