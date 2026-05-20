@@ -56,33 +56,6 @@ typedef struct
     float biayaTabungan;   // Tabungan darurat minimum
 } DataProvinsi;
 
-// STRUCT KARYAWAN
-typedef struct
-{
-    int id;
-    char nama[50];
-    int jam;
-    float tarif;
-    float gajiKotorPerBulan;
-    float pajakPerBulan;
-    float gajiBersihPerBulan;
-    float ptkp;
-    float pkp;
-    Jabatan jabatan;
-    StatusPerkawinan perkawinan;
-    int tanggungan;
-    InfoGaji info;
-
-    // Data wilayah & kelayakan
-    int indeksProvinsi;    // Index ke array dataProvinsi
-    float totalKHL;        // Total KHL/bulan (disesuaikan tanggungan)
-    float totalLivingWage; // Total Living Wage/bulan
-    float selisihKHL;      // Gaji bersih - KHL
-    float selisihLW;       // Gaji bersih - Living Wage
-    float selisihUMP;      // Gaji bersih - UMP 2026
-    StatusKelayakan kelayakan;
-} Karyawan;
-
 // HILL
 // DATA 38 PROVINSI
 // Pengeluaran per kapita BPS Sep 2024 (Rp/bulan):
@@ -143,3 +116,36 @@ DataProvinsi dataProvinsi[JUMLAH_PROVINSI] = {
     {"Papua Tengah", 4024270.0f, 800000, 110000, 400000, 128000, 192000, 280000, 140000, 320000},
     {"Papua Pegunungan", 4024270.0f, 945000, 131000, 472000, 151000, 226000, 378000, 189000, 472000},
 };
+
+// STRUCT KARYAWAN
+typedef struct
+{
+    int id;
+    char nama[50];
+    int jam;
+    float tarif;
+    float gajiKotorPerBulan;
+    float pajakPerBulan;
+    float gajiBersihPerBulan;
+    float ptkp;
+    float pkp;
+    Jabatan jabatan;
+    StatusPerkawinan perkawinan;
+    int tanggungan;
+    InfoGaji info;
+
+    // Data wilayah & kelayakan
+    int indeksProvinsi;    // Index ke array dataProvinsi
+    float totalKHL;        // Total KHL/bulan (disesuaikan tanggungan)
+    float totalLivingWage; // Total Living Wage/bulan
+    float selisihKHL;      // Gaji bersih - KHL
+    float selisihLW;       // Gaji bersih - Living Wage
+    float selisihUMP;      // Gaji bersih - UMP 2026
+    StatusKelayakan kelayakan;
+} Karyawan;
+
+// DEKLARASI FUNGSI
+void tampilkanDaftarProvinsi(); // HILL
+int pilihProvinsi(); // HILL
+void hitungKelayakan(Karyawan *kar); // HILL
+void tampilkanAnalisisKelayakan(Karyawan *kar); // HILL
