@@ -153,6 +153,7 @@ void tambahKaryawan(Karyawan *kar, int *jumlah); // ZIRA
 float getPTKP(StatusPerkawinan perkawinan, int tanggungan); //ZIRA
 float hitungPPh21(float pkp); // ZIRA
 void hitungGaji(Karyawan *kar); // ZIRA
+void tampilkanKaryawan(Karyawan *kar, int jumlah); // LEA
 
 // HILL
 // TAMPILKAN DAFTAR PROVINSI
@@ -445,4 +446,59 @@ void hitungGaji(Karyawan *kar)
     kar->pajakPerBulan = pajakSetahun / 12;
     kar->gajiBersihPerBulan = kar->gajiKotorPerBulan - kar->pajakPerBulan;
     kar->info.gajiPerBulan = kar->gajiBersihPerBulan;
+}
+
+// LEA
+// TAMPILKAN SEMUA KARYAWAN
+void tampilkanKaryawan(Karyawan *kar, int jumlah)
+{
+    if (jumlah == 0)
+    {
+        printf("Tidak Ada Data Karyawan\n");
+        return;
+    }
+
+    for (int i = 0; i < jumlah; i++)
+    {
+        printf("\n===== KARYAWAN %d =====\n", i + 1);
+        printf("ID                : %d\n", kar[i].id);
+        printf("Nama              : %s\n", kar[i].nama);
+        printf("Provinsi          : %s\n", dataProvinsi[kar[i].indeksProvinsi].nama);
+        printf("Jam/Bulan         : %d\n", kar[i].jam);
+        printf("Tarif Per Jam     : Rp%.2f\n", kar[i].tarif);
+
+        if (kar[i].jam >= 200)
+            printf("Produktivitas     : Sangat Tinggi\n");
+        else if (kar[i].jam >= 160)
+            printf("Produktivitas     : Tinggi\n");
+        else
+            printf("Produktivitas     : Normal\n");
+
+        switch (kar[i].jabatan)
+        {
+        case STAF:
+            printf("Jabatan           : Staf\n");
+            break;
+        case MANAJER:
+            printf("Jabatan           : Manajer\n");
+            break;
+        case MAGANG:
+            printf("Jabatan           : Magang\n");
+            break;
+        }
+
+        printf("Status Perkawinan : %s\n",
+            kar[i].perkawinan == TK ? "Tidak Kawin (TK)" : "Kawin (K)");
+        printf("Tanggungan        : %d\n", kar[i].tanggungan);
+
+        printf("--- Perhitungan PPh 21 ---\n");
+        printf("Gaji Kotor/bln    : Rp%.2f\n", kar[i].gajiKotorPerBulan);
+        printf("Gaji Kotor/thn    : Rp%.2f\n", kar[i].gajiKotorPerBulan * 12);
+        printf("PTKP              : Rp%.2f\n", kar[i].ptkp);
+        printf("PKP (setahun)     : Rp%.2f\n", kar[i].pkp);
+        printf("PPh 21/bulan      : Rp%.2f\n", kar[i].pajakPerBulan);
+        printf("Gaji Bersih/bln   : Rp%.2f\n", kar[i].gajiBersihPerBulan);
+
+        tampilkanAnalisisKelayakan(&kar[i]);
+    }
 }
